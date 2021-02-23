@@ -1,41 +1,41 @@
 const { expectRevert, time } = require('@openzeppelin/test-helpers');
-const CakeToken = artifacts.require('CakeToken');
+const MilkToken = artifacts.require('MilkToken');
 const MasterChef = artifacts.require('MasterChef');
-const SyrupBar = artifacts.require('SyrupBar');
+const FoamBar = artifacts.require('FoamBar');
 const SousChef = artifacts.require('SousChef');
 const MockBEP20 = artifacts.require('libs/MockBEP20');
 
 contract('SousChef', ([alice, bob, carol, dev, minter]) => {
   beforeEach(async () => {
-    this.syrup = await MockBEP20.new('LPToken', 'LP1', '1000000', {
+    this.foam = await MockBEP20.new('LPToken', 'LP1', '1000000', {
       from: minter,
     });
-    this.chef = await SousChef.new(this.syrup.address, '40', '300', '400', {
+    this.chef = await SousChef.new(this.foam.address, '40', '815', '915', {
       from: minter,
     });
   });
 
   it('sous chef now', async () => {
-    await this.syrup.transfer(bob, '1000', { from: minter });
-    await this.syrup.transfer(carol, '1000', { from: minter });
-    await this.syrup.transfer(alice, '1000', { from: minter });
-    assert.equal((await this.syrup.balanceOf(bob)).toString(), '1000');
+    await this.foam.transfer(bob, '1000', { from: minter });
+    await this.foam.transfer(carol, '1000', { from: minter });
+    await this.foam.transfer(alice, '1000', { from: minter });
+    assert.equal((await this.foam.balanceOf(bob)).toString(), '1000');
 
-    await this.syrup.approve(this.chef.address, '1000', { from: bob });
-    await this.syrup.approve(this.chef.address, '1000', { from: alice });
-    await this.syrup.approve(this.chef.address, '1000', { from: carol });
+    await this.foam.approve(this.chef.address, '1000', { from: bob });
+    await this.foam.approve(this.chef.address, '1000', { from: alice });
+    await this.foam.approve(this.chef.address, '1000', { from: carol });
 
     await this.chef.deposit('10', { from: bob });
     assert.equal(
-      (await this.syrup.balanceOf(this.chef.address)).toString(),
+      (await this.foam.balanceOf(this.chef.address)).toString(),
       '10'
     );
 
-    await time.advanceBlockTo('300');
+    await time.advanceBlockTo('815');
 
     await this.chef.deposit('30', { from: alice });
     assert.equal(
-      (await this.syrup.balanceOf(this.chef.address)).toString(),
+      (await this.foam.balanceOf(this.chef.address)).toString(),
       '40'
     );
     assert.equal(
@@ -43,7 +43,7 @@ contract('SousChef', ([alice, bob, carol, dev, minter]) => {
       '40'
     );
 
-    await time.advanceBlockTo('302');
+    await time.advanceBlockTo('817');
     assert.equal(
       (await this.chef.pendingReward(bob, { from: bob })).toString(),
       '50'
@@ -55,10 +55,10 @@ contract('SousChef', ([alice, bob, carol, dev, minter]) => {
 
     await this.chef.deposit('40', { from: carol });
     assert.equal(
-      (await this.syrup.balanceOf(this.chef.address)).toString(),
+      (await this.foam.balanceOf(this.chef.address)).toString(),
       '80'
     );
-    await time.advanceBlockTo('304');
+    await time.advanceBlockTo('819');
     //  bob 10, alice 30, carol 40
     assert.equal(
       (await this.chef.pendingReward(bob, { from: bob })).toString(),
@@ -85,7 +85,7 @@ contract('SousChef', ([alice, bob, carol, dev, minter]) => {
       '110'
     );
 
-    await time.advanceBlockTo('307');
+    await time.advanceBlockTo('822');
     assert.equal(
       (await this.chef.pendingReward(bob, { from: bob })).toString(),
       '86'
@@ -98,7 +98,7 @@ contract('SousChef', ([alice, bob, carol, dev, minter]) => {
     await this.chef.withdraw('20', { from: alice }); // 308 bob 40, alice 30, carol 40
     await this.chef.withdraw('30', { from: bob }); // 309  bob 10, alice 30, carol 40
 
-    await time.advanceBlockTo('310');
+    await time.advanceBlockTo('825');
     assert.equal(
       (await this.chef.pendingReward(bob, { from: bob })).toString(),
       '118'
@@ -108,11 +108,11 @@ contract('SousChef', ([alice, bob, carol, dev, minter]) => {
       '166'
     );
     assert.equal(
-      (await this.syrup.balanceOf(this.chef.address)).toString(),
+      (await this.foam.balanceOf(this.chef.address)).toString(),
       '80'
     );
 
-    await time.advanceBlockTo('400');
+    await time.advanceBlockTo('915');
     assert.equal(
       (await this.chef.pendingReward(bob, { from: bob })).toString(),
       '568'
@@ -126,7 +126,7 @@ contract('SousChef', ([alice, bob, carol, dev, minter]) => {
       '1915'
     );
 
-    await time.advanceBlockTo('420');
+    await time.advanceBlockTo('920');
     assert.equal(
       (await this.chef.pendingReward(bob, { from: bob })).toString(),
       '568'
@@ -144,7 +144,7 @@ contract('SousChef', ([alice, bob, carol, dev, minter]) => {
     await this.chef.withdraw('30', { from: alice });
     await expectRevert(this.chef.withdraw('50', { from: carol }), 'not enough');
     await this.chef.deposit('30', { from: carol });
-    await time.advanceBlockTo('450');
+    await time.advanceBlockTo('950');
     assert.equal(
       (await this.chef.pendingReward(bob, { from: bob })).toString(),
       '568'
@@ -161,47 +161,48 @@ contract('SousChef', ([alice, bob, carol, dev, minter]) => {
     assert.equal((await this.chef.addressLength()).toString(), '3');
   });
 
-  it('try syrup', async () => {
-    this.cake = await CakeToken.new({ from: minter });
-    this.syrup = await SyrupBar.new(this.cake.address, { from: minter });
+  it('try foam', async () => {
+    this.milk = await MilkToken.new(dev, { from: minter });
+    this.foam = await FoamBar.new(this.milk.address, { from: minter });
     this.lp1 = await MockBEP20.new('LPToken', 'LP1', '1000000', {
       from: minter,
     });
     this.chef = await MasterChef.new(
-      this.cake.address,
-      this.syrup.address,
+      this.milk.address,
+      this.foam.address,
       dev,
       '1000',
       '300',
+      '1',
       { from: minter }
     );
-    await this.cake.transferOwnership(this.chef.address, { from: minter });
-    await this.syrup.transferOwnership(this.chef.address, { from: minter });
+    await this.milk.transferOwnership(this.chef.address, { from: minter });
+    await this.foam.transferOwnership(this.chef.address, { from: minter });
     await this.lp1.transfer(bob, '2000', { from: minter });
     await this.lp1.transfer(alice, '2000', { from: minter });
 
     await this.lp1.approve(this.chef.address, '1000', { from: alice });
-    await this.cake.approve(this.chef.address, '1000', { from: alice });
+    await this.milk.approve(this.chef.address, '1000', { from: alice });
 
     await this.chef.add('1000', this.lp1.address, true, { from: minter });
     await this.chef.deposit(1, '20', { from: alice });
-    await time.advanceBlockTo('500');
+    await time.advanceBlockTo('1000');
     await this.chef.deposit(1, '0', { from: alice });
     await this.chef.add('1000', this.lp1.address, true, { from: minter });
 
     await this.chef.enterStaking('10', { from: alice });
-    await time.advanceBlockTo('510');
+    await time.advanceBlockTo('1010');
     await this.chef.enterStaking('10', { from: alice });
 
-    this.chef2 = await SousChef.new(this.syrup.address, '40', '600', '800', {
+    this.chef2 = await SousChef.new(this.foam.address, '40', '1100', '1300', {
       from: minter,
     });
-    await this.syrup.approve(this.chef2.address, '10', { from: alice });
-    await time.advanceBlockTo('590');
+    await this.foam.approve(this.chef2.address, '10', { from: alice });
+    await time.advanceBlockTo('1090');
     this.chef2.deposit('10', { from: alice }); //520
-    await time.advanceBlockTo('610');
+    await time.advanceBlockTo('1110');
     assert.equal(
-      (await this.syrup.balanceOf(this.chef2.address)).toString(),
+      (await this.foam.balanceOf(this.chef2.address)).toString(),
       '10'
     );
     assert.equal(
@@ -211,14 +212,14 @@ contract('SousChef', ([alice, bob, carol, dev, minter]) => {
   });
 
   it('emergencyWithdraw', async () => {
-    await this.syrup.transfer(alice, '1000', { from: minter });
-    assert.equal((await this.syrup.balanceOf(alice)).toString(), '1000');
+    await this.foam.transfer(alice, '1000', { from: minter });
+    assert.equal((await this.foam.balanceOf(alice)).toString(), '1000');
 
-    await this.syrup.approve(this.chef.address, '1000', { from: alice });
+    await this.foam.approve(this.chef.address, '1000', { from: alice });
     await this.chef.deposit('10', { from: alice });
-    assert.equal((await this.syrup.balanceOf(alice)).toString(), '990');
+    assert.equal((await this.foam.balanceOf(alice)).toString(), '990');
     await this.chef.emergencyWithdraw({ from: alice });
-    assert.equal((await this.syrup.balanceOf(alice)).toString(), '1000');
+    assert.equal((await this.foam.balanceOf(alice)).toString(), '1000');
     assert.equal(
       (await this.chef.pendingReward(alice, { from: alice })).toString(),
       '0'
