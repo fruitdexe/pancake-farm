@@ -1,6 +1,6 @@
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const fs = require('fs');
-const mnemonic = fs.readFileSync(".secret-testnet").toString().trim(); // <------------------------ change the secret file and put the bsc mnemonic we will use
+const mnemonic = fs.readFileSync(".secret").toString().trim(); // <------------------------ change the secret file and put the bsc mnemonic we will use
 const mnemonicTestnet = fs.readFileSync(".secret-testnet").toString().trim(); // <------------------------ put the testnet mnemonic you want to use
 
 module.exports = {
@@ -16,7 +16,6 @@ module.exports = {
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true,
-      from: '' // <------------------------ put your testnet acc
     },
     bsc: {
       provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed1.binance.org`),

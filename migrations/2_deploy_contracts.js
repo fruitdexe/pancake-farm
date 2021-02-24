@@ -11,13 +11,14 @@ const BnbStaking = artifacts.require("BnbStaking");
 const INITIAL_MINT = '25000'; // <------------------------
 
 // Developer address
-const DEV_ADDR = ''; // change this to our account <------------------------
+const DEV_ADDR = '0x6c3CeDF912974630bd38Dd20b0da842d5a4fD327'; // change this to our account <------------------------
 
 // Reward starting block
 const BLOCKS_PER_HOUR = (3600 / 3) // 3sec Block Time
 const BLOCKS_PER_DAY = 24 * BLOCKS_PER_HOUR
-const STARTING_BLOCK = 12345; // change this to the proper starting block <------------------------
-const REWARDS_START = String(STARTING_BLOCK + (BLOCKS_PER_HOUR * 6))
+const STARTING_BLOCK = 5154787; // change this to the proper starting block <------------------------
+// const REWARDS_START = String(STARTING_BLOCK + (BLOCKS_PER_HOUR * 6))
+const REWARDS_START = String(STARTING_BLOCK)
 
 // MasterChef variables
 const MILK_TOKENS_PER_BLOCK = '10'; // <------------------------
