@@ -31,11 +31,6 @@ contract Context {
 
 // File: node_modules\@pancakeswap\pancake-swap-lib\contracts\access\Ownable.sol
 
-// SPDX-License-Identifier: GPL-3.0-or-later
-
-pragma solidity >=0.4.0;
-
-
 /**
  * @dev Contract module which provides a basic access control mechanism, where
  * there is an account (an owner) that can be granted exclusive access to
@@ -109,9 +104,6 @@ contract Ownable is Context {
 
 // File: node_modules\@pancakeswap\pancake-swap-lib\contracts\token\BEP20\IBEP20.sol
 
-// SPDX-License-Identifier: GPL-3.0-or-later
-
-pragma solidity >=0.4.0;
 
 interface IBEP20 {
     /**
@@ -209,10 +201,6 @@ interface IBEP20 {
 }
 
 // File: node_modules\@pancakeswap\pancake-swap-lib\contracts\math\SafeMath.sol
-
-// SPDX-License-Identifier: MIT
-
-pragma solidity >=0.4.0;
 
 /**
  * @dev Wrappers over Solidity's arithmetic operations with added overflow
@@ -402,9 +390,6 @@ library SafeMath {
 
 // File: node_modules\@pancakeswap\pancake-swap-lib\contracts\utils\Address.sol
 
-// SPDX-License-Identifier: MIT
-
-pragma solidity ^0.6.2;
 
 /**
  * @dev Collection of functions related to the address type
@@ -565,14 +550,6 @@ library Address {
 }
 
 // File: @pancakeswap\pancake-swap-lib\contracts\token\BEP20\BEP20.sol
-
-// SPDX-License-Identifier: MIT
-
-pragma solidity >=0.4.0;
-
-
-
-
 
 
 /**

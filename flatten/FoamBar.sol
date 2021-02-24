@@ -199,7 +199,8 @@ interface IBEP20 {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
-// File: node_modules\@pancakeswap\pancake-swap-lib\contra
+// File: node_modules\@pancakeswap\pancake-swap-lib\contracts\math\SafeMath.sol
+
 
 /**
  * @dev Wrappers over Solidity's arithmetic operations with added overflow
@@ -551,8 +552,6 @@ library Address {
 
 
 
-
-
 /**
  * @dev Implementation of the {IBEP20} interface.
  *
@@ -863,6 +862,10 @@ contract BEP20 is Context, IBEP20, Ownable {
     }
 }
 
+// File: contracts\MilkToken.sol
+
+pragma solidity 0.6.12;
+
 
 // MilkToken with Governance.
 contract MilkToken is BEP20('MilkSwap Token', 'MILK') {
@@ -1114,6 +1117,12 @@ contract MilkToken is BEP20('MilkSwap Token', 'MILK') {
         return chainId;
     }
 }
+
+// File: contracts\FoamBar.sol
+
+pragma solidity 0.6.12;
+
+
 
 // FoamBar with Governance.
 contract FoamBar is BEP20('FoamBar Token', 'FOAM') {
