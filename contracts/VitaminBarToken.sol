@@ -2,10 +2,10 @@ pragma solidity 0.6.12;
 
 import "@pancakeswap/pancake-swap-lib/contracts/token/BEP20/BEP20.sol";
 
-import "./MilkToken.sol";
+import "./FruitDexToken.sol";
 
-// FoamBar with Governance.
-contract FoamBar is BEP20('FoamBar Token', 'FOAM') {
+// VitaminBar with Governance.
+contract VitaminBarToken is BEP20('VitaminBar Token', 'Vita') {
     /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (MasterChef).
     function mint(address _to, uint256 _amount) public onlyOwner {
         _mint(_to, _amount);
@@ -17,23 +17,23 @@ contract FoamBar is BEP20('FoamBar Token', 'FOAM') {
         _moveDelegates(_delegates[_from], address(0), _amount);
     }
 
-    // The MILK TOKEN!
-    MilkToken public milk;
+    // The FruitDexToken TOKEN!
+    FruitDexToken public fruit;
 
 
     constructor(
-        MilkToken _milk
+        FruitDexToken _fruit
     ) public {
-        milk = _milk;
+        fruit = _fruit;
     }
 
-    // Safe milk transfer function, just in case if rounding error causes pool to not have enough MILKs.
-    function safeMilkTransfer(address _to, uint256 _amount) public onlyOwner {
-        uint256 milkBal = milk.balanceOf(address(this));
-        if (_amount > milkBal) {
-            milk.transfer(_to, milkBal);
+    // Safe Fruit transfer function, just in case if rounding error causes pool to not have enough Fruit.
+    function safeFruitTransfer(address _to, uint256 _amount) public onlyOwner {
+        uint256 fruitBal = fruit.balanceOf(address(this));
+        if (_amount > fruitBal) {
+            fruit.transfer(_to, fruitBal);
         } else {
-            milk.transfer(_to, _amount);
+            fruit.transfer(_to, _amount);
         }
     }
 
@@ -139,9 +139,9 @@ contract FoamBar is BEP20('FoamBar Token', 'FOAM') {
         );
 
         address signatory = ecrecover(digest, v, r, s);
-        require(signatory != address(0), "MILK::delegateBySig: invalid signature");
-        require(nonce == nonces[signatory]++, "MILK::delegateBySig: invalid nonce");
-        require(now <= expiry, "MILK::delegateBySig: signature expired");
+        require(signatory != address(0), "FRUIT::delegateBySig: invalid signature");
+        require(nonce == nonces[signatory]++, "FRUIT::delegateBySig: invalid nonce");
+        require(now <= expiry, "FRUIT::delegateBySig: signature expired");
         return _delegate(signatory, delegatee);
     }
 
@@ -171,7 +171,7 @@ contract FoamBar is BEP20('FoamBar Token', 'FOAM') {
         view
         returns (uint256)
     {
-        require(blockNumber < block.number, "MILK::getPriorVotes: not yet determined");
+        require(blockNumber < block.number, "FRUIT::getPriorVotes: not yet determined");
 
         uint32 nCheckpoints = numCheckpoints[account];
         if (nCheckpoints == 0) {
@@ -208,7 +208,7 @@ contract FoamBar is BEP20('FoamBar Token', 'FOAM') {
         internal
     {
         address currentDelegate = _delegates[delegator];
-        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying MILKs (not scaled);
+        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying FRUIT (not scaled);
         _delegates[delegator] = delegatee;
 
         emit DelegateChanged(delegator, currentDelegate, delegatee);
@@ -244,7 +244,7 @@ contract FoamBar is BEP20('FoamBar Token', 'FOAM') {
     )
         internal
     {
-        uint32 blockNumber = safe32(block.number, "MILK::_writeCheckpoint: block number exceeds 32 bits");
+        uint32 blockNumber = safe32(block.number, "FRUIT::_writeCheckpoint: block number exceeds 32 bits");
 
         if (nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber) {
             checkpoints[delegatee][nCheckpoints - 1].votes = newVotes;

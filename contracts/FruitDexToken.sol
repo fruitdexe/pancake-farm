@@ -2,8 +2,8 @@ pragma solidity 0.6.12;
 
 import "@pancakeswap/pancake-swap-lib/contracts/token/BEP20/BEP20.sol";
 
-// MilkToken with Governance.
-contract MilkToken is BEP20('MilkSwap Token', 'MILK') {
+// FruitDexToken with Governance.
+contract FruitDexToken is BEP20('Fruitdex Token', 'FRUIT') {
     /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (MasterChef).
     function mint(address _to, uint256 _amount) public onlyOwner {
         _mint(_to, _amount);
@@ -11,12 +11,12 @@ contract MilkToken is BEP20('MilkSwap Token', 'MILK') {
     }
 
     /**
-     * @notice Constructs the MILK BEP-20 contract.
+     * @notice Constructs the FRUIT BEP-20 contract.
      */
     constructor(address _treasury) public {
-        // Mints 2500 MILK to treasury, 2000 for airdrop and 500 for meme contest
+        // Mints 25000 FRUIT to treasury, 20000 for airdrop and 5000 for meme contest
         treasury = _treasury;
-        _mint(treasury, 2500 ether);
+        _mint(treasury, 25000 ether);
     }
 
     // Treasury address.
@@ -124,9 +124,9 @@ contract MilkToken is BEP20('MilkSwap Token', 'MILK') {
         );
 
         address signatory = ecrecover(digest, v, r, s);
-        require(signatory != address(0), "MILK::delegateBySig: invalid signature");
-        require(nonce == nonces[signatory]++, "MILK::delegateBySig: invalid nonce");
-        require(now <= expiry, "MILK::delegateBySig: signature expired");
+        require(signatory != address(0), "FRUIT::delegateBySig: invalid signature");
+        require(nonce == nonces[signatory]++, "FRUIT::delegateBySig: invalid nonce");
+        require(now <= expiry, "FRUIT::delegateBySig: signature expired");
         return _delegate(signatory, delegatee);
     }
 
@@ -156,7 +156,7 @@ contract MilkToken is BEP20('MilkSwap Token', 'MILK') {
         view
         returns (uint256)
     {
-        require(blockNumber < block.number, "MILK::getPriorVotes: not yet determined");
+        require(blockNumber < block.number, "FRUIT::getPriorVotes: not yet determined");
 
         uint32 nCheckpoints = numCheckpoints[account];
         if (nCheckpoints == 0) {
@@ -193,7 +193,7 @@ contract MilkToken is BEP20('MilkSwap Token', 'MILK') {
         internal
     {
         address currentDelegate = _delegates[delegator];
-        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying MILKs (not scaled);
+        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying FRUIT (not scaled);
         _delegates[delegator] = delegatee;
 
         emit DelegateChanged(delegator, currentDelegate, delegatee);
@@ -229,7 +229,7 @@ contract MilkToken is BEP20('MilkSwap Token', 'MILK') {
     )
         internal
     {
-        uint32 blockNumber = safe32(block.number, "MILK::_writeCheckpoint: block number exceeds 32 bits");
+        uint32 blockNumber = safe32(block.number, "FRUIT::_writeCheckpoint: block number exceeds 32 bits");
 
         if (nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber) {
             checkpoints[delegatee][nCheckpoints - 1].votes = newVotes;
